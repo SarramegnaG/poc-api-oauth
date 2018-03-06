@@ -27,6 +27,9 @@ class AppKernel extends Kernel
             // Nelmio Api Doc
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
+            // FOS OAuth Server
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+
             new AppBundle\AppBundle(),
         ];
 

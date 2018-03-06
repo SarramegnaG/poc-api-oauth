@@ -104,3 +104,13 @@ hautelook_alice:
     root_dirs:
         - '%kernel.root_dir%'
         - '%kernel.project_dir%'
+
+# FOS OAuth Configuration
+fos_oauth_server:
+    db_driver: orm
+    client_class: AppBundle\Entity\Client
+    access_token_class: AppBundle\Entity\AccessToken
+    refresh_token_class: AppBundle\Entity\RefreshToken
+    auth_code_class: AppBundle\Entity\AuthCode
+    service:
+        user_provider: security.user.provider.concrete.app_provider

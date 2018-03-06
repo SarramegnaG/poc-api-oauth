@@ -1,4 +1,6 @@
 AppBundle\Entity\User:
     user_{1..100}:
-        username: <username()>
-        password: test
+        username: '<username()>'
+        password: '\$2y\$13\$JkGVeyLe0fmUytcWeFjhLOphcscxkPLIEWIXk6rVYeSR.GNXeluTO'
+        email: '<safeEmail()>'
+        is_active: 1

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -13,39 +14,61 @@ use JMS\Serializer\Annotation\Expose;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ExclusionPolicy("ALL")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(type="guid")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Expose
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      *
      * @Expose
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=64)
+     * @ORM\Column(type="string", length=64)
      */
-    private $password;
+    protected $password;
+
+    /**
+     * @ORM\Column(type="string", length=60, unique=true)
+     *
+     * @Expose
+     */
+    protected $email;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     *
+     * @Expose
+     */
+    protected $isActive;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
 
     /**
      * Get id
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -99,5 +122,107 @@ class User
     {
         return $this->password;
     }
-}
 
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * Get salt
+     *
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Erase credentials
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+        ]);
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     *
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password
+        ) = unserialize($serialized);
+    }
+}

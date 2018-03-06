@@ -4,6 +4,11 @@ app.swagger_ui:
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
+fos_oauth_server_token:
+    path: /v1/token
+    methods:  [POST]
+    defaults: { _controller: fos_oauth_server.controller.token:tokenAction }
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
